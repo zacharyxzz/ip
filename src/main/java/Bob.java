@@ -14,7 +14,7 @@ public class Bob {
 
         while (true) {
             input = scanner.nextLine();
-            String[] inputSplit = input.split(" ");
+            String[] inputSplit = input.split(" ", 2);
 
             if (input.equals("bye")) {
                 System.out.println("____________________________________________________________");
@@ -58,21 +58,41 @@ public class Bob {
                     System.out.println("Invalid task number.");
                     System.out.println("____________________________________________________________");
                 }
+            } else if (inputSplit[0].equals("todo")) {
+                tasks[taskCount] = new Todo(inputSplit[1]);
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  [T][ ] " + inputSplit[1]);
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            } else if (inputSplit[0].equals("deadline")) {
+                String[] parts = inputSplit[1].split(" /by ", 2);
+                tasks[taskCount] = new Deadline(parts[0], parts[1]);
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  [D][ ] " + parts[0] + " (by: " + parts[1] + ")");
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            } else if (inputSplit[0].equals("event")) {
+                String[] parts = inputSplit[1].split(" /from ", 2);
+                String[] fromTo = parts[1].split(" /to ", 2);
+                tasks[taskCount] = new Event(parts[0], fromTo[0], fromTo[1]);
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  [E][ ] " + parts[0] + " (from: " + fromTo[0] + " to: " + fromTo[1] + ")");
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+                System.out.println("____________________________________________________________");
             } else {
-                if (taskCount < 100) {
-                    tasks[taskCount] = new Task(input);
-                    taskCount++;
-                    System.out.println("____________________________________________________________");
-                    System.out.println("added: " + input);
-                    System.out.println("____________________________________________________________");
-                } else {
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Task list is full. Cannot add more tasks.");
-                    System.out.println("____________________________________________________________");
-                }
+                System.out.println("____________________________________________________________");
+                System.out.println("Invalid command.");
+                System.out.println("____________________________________________________________");
             }
         }
 
         scanner.close();
     }
 }
+
