@@ -1,11 +1,15 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bob {
     private static final String FILE_PATH = "./data/duke.txt";
-    public static void main(String[] args) {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy h:mma");
 
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = loadTasks();
         String input;
@@ -106,12 +110,17 @@ public class Bob {
             throw new BobException("The description of a deadline must include '/by' followed by a date/time.");
         }
         String[] parts = inputSplit[1].split(" /by ", 2);
-        tasks.add(new Deadline(parts[0], parts[1]));
-        System.out.println("____________________________________________________________");
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  [D][ ] " + parts[0] + " (by: " + parts[1] + ")");
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println("____________________________________________________________");
+        try {
+            LocalDateTime deadline = LocalDateTime.parse(parts[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            tasks.add(new Deadline(parts[0], deadline));
+            System.out.println("____________________________________________________________");
+            System.out.println("Got it. I've added this task:");
+            System.out.println("  [D][ ] " + parts[0] + " (by: " + deadline.format(DATETIME_FORMATTER) + ")");
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("____________________________________________________________");
+        } catch (Exception e) {
+            throw new BobException("Please use the date format 'yyyy-mm-dd HHmm'.");
+        }
     }
 
     private static void handleEventCommand(String[] inputSplit, ArrayList<Task> tasks) throws BobException {
@@ -120,12 +129,18 @@ public class Bob {
         }
         String[] parts = inputSplit[1].split(" /from ", 2);
         String[] fromTo = parts[1].split(" /to ", 2);
-        tasks.add(new Event(parts[0], fromTo[0], fromTo[1]));
-        System.out.println("____________________________________________________________");
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  [E][ ] " + parts[0] + " (from: " + fromTo[0] + " to: " + fromTo[1] + ")");
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println("____________________________________________________________");
+        try {
+            LocalDateTime from = LocalDateTime.parse(fromTo[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            LocalDateTime to = LocalDateTime.parse(fromTo[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            tasks.add(new Event(parts[0], from, to));
+            System.out.println("____________________________________________________________");
+            System.out.println("Got it. I've added this task:");
+            System.out.println("  [E][ ] " + parts[0] + " (from: " + from.format(DATETIME_FORMATTER) + " to: " + to.format(DATETIME_FORMATTER) + ")");
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("____________________________________________________________");
+        } catch (Exception e) {
+            throw new BobException("Please use the date format 'yyyy-mm-dd HHmm'.");
+        }
     }
 
     private static void handleDeleteCommand(String[] inputSplit, ArrayList<Task> tasks) throws BobException {
@@ -184,10 +199,10 @@ public class Bob {
                         tasks.add(new Todo(parts[2], parts[1].equals("1")));
                         break;
                     case "D":
-                        tasks.add(new Deadline(parts[2], parts[3], parts[1].equals("1")));
+                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
                         break;
                     case "E":
-                        tasks.add(new Event(parts[2], parts[3], parts[4], parts[1].equals("1")));
+                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), LocalDateTime.parse(parts[4], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
                         break;
                     default:
                         System.out.println("Unknown task type: " + parts[0]);
@@ -204,6 +219,3 @@ public class Bob {
         return tasks;
     }
 }
-
-
-
