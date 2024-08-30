@@ -1,10 +1,13 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bob {
+    private static final String FILE_PATH = "./data/duke.txt";
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks = loadTasks();
         String input;
 
         System.out.println("____________________________________________________________");
@@ -26,16 +29,22 @@ public class Bob {
                     listTasks(tasks);
                 } else if (inputSplit[0].equals("mark")) {
                     handleMarkCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else if (inputSplit[0].equals("unmark")) {
                     handleUnmarkCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else if (inputSplit[0].equals("todo")) {
                     handleTodoCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else if (inputSplit[0].equals("deadline")) {
                     handleDeadlineCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else if (inputSplit[0].equals("event")) {
                     handleEventCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else if (inputSplit[0].equals("delete")) {
                     handleDeleteCommand(inputSplit, tasks);
+                    saveTasks(tasks);
                 } else {
                     throw new BobException("I'm sorry, but I don't know what that means :-(");
                 }
@@ -140,6 +149,61 @@ public class Bob {
             throw new BobException("Invalid task number.");
         }
     }
+
+    private static void saveTasks(ArrayList<Task> tasks) {
+        try {
+            File directory = new File("./data");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            FileWriter writer = new FileWriter(FILE_PATH);
+            for (Task task : tasks) {
+                writer.write(task.toFileFormat() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks: " + e.getMessage());
+        }
+    }
+
+    private static ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        try {
+            File file = new File(FILE_PATH);
+            if (!file.exists()) {
+                return tasks;  // No data file exists, start with an empty list.
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" \\| ");
+                switch (parts[0]) {
+                    case "T":
+                        tasks.add(new Todo(parts[2], parts[1].equals("1")));
+                        break;
+                    case "D":
+                        tasks.add(new Deadline(parts[2], parts[3], parts[1].equals("1")));
+                        break;
+                    case "E":
+                        tasks.add(new Event(parts[2], parts[3], parts[4], parts[1].equals("1")));
+                        break;
+                    default:
+                        System.out.println("Unknown task type: " + parts[0]);
+                        break;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error loading tasks: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Corrupted data file. Starting with an empty task list.");
+            tasks.clear();  // Start with an empty list if data is corrupted.
+        }
+        return tasks;
+    }
 }
+
 
 
