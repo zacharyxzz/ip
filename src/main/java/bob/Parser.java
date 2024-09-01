@@ -1,6 +1,7 @@
 package bob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Parser {
 
@@ -42,12 +43,26 @@ public class Parser {
                 case "delete":
                     handleDeleteCommand(inputSplit, tasks, ui, storage);
                     break;
+                case "find":
+                    handleFindCommand(inputSplit, tasks, ui);
+                    break;
                 default:
                     throw new BobException("I'm sorry, but I don't know what that means :-(");
             }
         } catch (BobException e) {
             ui.showError(e.getMessage());
         }
+    }
+
+    // The following methods are helper methods to handle specific commands
+
+    private static void handleFindCommand(String[] inputSplit, TaskList tasks, Ui ui) throws BobException {
+        if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
+            throw new BobException("The search keyword cannot be empty.");
+        }
+        String keyword = inputSplit[1];
+        ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+        ui.showMatchingTasks(matchingTasks);
     }
 
     private static void handleMarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
@@ -70,7 +85,6 @@ public class Parser {
         storage.save(tasks);
     }
 
-    // The following methods are helper methods to handle specific commands
     private static void handleTodoCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
             throw new BobException("The description of a todo cannot be empty.");
