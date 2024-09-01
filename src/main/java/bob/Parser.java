@@ -4,6 +4,14 @@ import java.time.format.DateTimeFormatter;
 
 public class Parser {
 
+    /**
+     * Parses and executes the user's input command.
+     *
+     * @param input the input command from the user.
+     * @param tasks the TaskList that the command will operate on.
+     * @param ui the Ui object used to interact with the user.
+     * @param storage the Storage object used to save and load tasks.
+     */
     public static void parse(String input, TaskList tasks, Ui ui, Storage storage) {
         String[] inputSplit = input.split(" ", 2);
 
@@ -62,6 +70,7 @@ public class Parser {
         storage.save(tasks);
     }
 
+    // The following methods are helper methods to handle specific commands
     private static void handleTodoCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
             throw new BobException("The description of a todo cannot be empty.");

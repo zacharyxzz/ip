@@ -8,6 +8,11 @@ public class Bob {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Constructs a Bob object that initializes the UI, Storage, and TaskList components.
+     *
+     * @param filePath the path to the file where tasks are stored.
+     */
     public Bob(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -19,6 +24,9 @@ public class Bob {
         }
     }
 
+    /**
+     * Starts the Bob application, handling user input and commands.
+     */
     public void run() {
         ui.showWelcome();
         Scanner scanner = new Scanner(System.in);

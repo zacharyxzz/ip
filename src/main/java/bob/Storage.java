@@ -7,10 +7,23 @@ import java.util.ArrayList;
 public class Storage {
     private String filePath;
 
+
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath the path to the file where tasks are stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+
+    /**
+     * Loads tasks from the file.
+     *
+     * @return an ArrayList of tasks loaded from the file.
+     * @throws BobException if there is an error loading the tasks.
+     */
     public ArrayList<Task> load() throws BobException {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -46,6 +59,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves tasks to the file.
+     *
+     * @param tasks the TaskList to be saved to the file.
+     * @throws BobException if there is an error saving the tasks.
+     */
     public void save(TaskList tasks) throws BobException {
         try {
             File directory = new File(filePath).getParentFile();

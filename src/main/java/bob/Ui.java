@@ -25,6 +25,12 @@ public class Ui {
         System.out.println("Error loading tasks. Starting with an empty task list.");
     }
 
+
+    /**
+     * Displays the list of tasks to the user.
+     *
+     * @param tasks the TaskList containing the tasks to be displayed.
+     */
     public void showTaskList(TaskList tasks) throws BobException {
         showLine();
         if (tasks.isEmpty()) {
@@ -38,6 +44,13 @@ public class Ui {
         showLine();
     }
 
+
+    /**
+     * Displays a message indicating that a task has been removed.
+     *
+     * @param task the task that was removed.
+     * @param tasks the TaskList containing all tasks.
+     */
     public void showAddedTask(Task task, TaskList tasks) {
         showLine();
         System.out.println("Got it. I've added this task:");
