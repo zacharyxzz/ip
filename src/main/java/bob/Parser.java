@@ -1,6 +1,7 @@
 package bob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Parser {
@@ -100,11 +101,15 @@ public class Parser {
             throw new BobException("The description of a deadline must include '/by' followed by a date/time.");
         }
         String[] parts = inputSplit[1].split(" /by ", 2);
-        LocalDateTime deadline = LocalDateTime.parse(parts[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
-        Task task = new Deadline(parts[0], deadline);
-        tasks.addTask(task);
-        ui.showAddedTask(task, tasks);
-        storage.save(tasks);
+        try {
+            LocalDateTime deadline = LocalDateTime.parse(parts[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            Task task = new Deadline(parts[0], deadline);
+            tasks.addTask(task);
+            ui.showAddedTask(task, tasks);
+            storage.save(tasks);
+        } catch (DateTimeParseException e) {
+            throw new BobException("Invalid date/time format. Please use 'yyyy-MM-dd HHmm'.");
+        }
     }
 
     private static void handleEventCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
@@ -113,12 +118,17 @@ public class Parser {
         }
         String[] parts = inputSplit[1].split(" /from ", 2);
         String[] fromTo = parts[1].split(" /to ", 2);
-        LocalDateTime from = LocalDateTime.parse(fromTo[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
-        LocalDateTime to = LocalDateTime.parse(fromTo[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
-        Task task = new Event(parts[0], from, to);
-        tasks.addTask(task);
-        ui.showAddedTask(task, tasks);
-        storage.save(tasks);
+
+        try {
+            LocalDateTime from = LocalDateTime.parse(fromTo[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            LocalDateTime to = LocalDateTime.parse(fromTo[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            Task task = new Event(parts[0], from, to);
+            tasks.addTask(task);
+            ui.showAddedTask(task, tasks);
+            storage.save(tasks);
+        } catch (DateTimeParseException e) {
+        throw new BobException("Invalid date/time format. Please use 'yyyy-MM-dd HHmm'.");
+        }
     }
 
     private static void handleDeleteCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
