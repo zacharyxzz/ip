@@ -29,26 +29,17 @@ public class Bob {
     }
 
     /**
-     * Starts the Bob application, handling user input and commands.
-     */
-    public void run() {
-        ui.showWelcome();
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.nextLine();
-            Parser.parse(input, tasks, ui, storage);
-        }
-    }
-
-    public static void main(String[] args) {
-        new Bob(DEFAULT_FILE_PATH).run();
-    }
-
-    /**
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Bob heard: " + input;
+        return Parser.parse(input, tasks, ui, storage);
+    }
+
+    /**
+     * Returns the welcome message from the Ui.
+     */
+    public String getWelcomeMessage() {
+        return ui.showWelcome();
     }
 
 }
