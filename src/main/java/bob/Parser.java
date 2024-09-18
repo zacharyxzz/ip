@@ -49,7 +49,8 @@ public class Parser {
         return ui.showMatchingTasks(matchingTasks);
     }
 
-    private static String handleMarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleMarkCommand(String[] inputSplit,
+                                            TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
         assert index >= 0 && index < tasks.size();
         tasks.get(index).markAsDone();
