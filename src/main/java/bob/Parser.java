@@ -49,7 +49,8 @@ public class Parser {
         return ui.showMatchingTasks(matchingTasks);
     }
 
-    private static String handleMarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleMarkCommand(String[] inputSplit,
+                                            TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
         assert index >= 0 && index < tasks.size();
         tasks.get(index).markAsDone();
@@ -57,7 +58,8 @@ public class Parser {
         return "Nice! I've marked this task as done:\n  " + tasks.get(index);
     }
 
-    private static String handleUnmarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleUnmarkCommand(String[] inputSplit,
+                                              TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
         assert index >= 0 && index < tasks.size();
         tasks.get(index).unmarkAsDone();
@@ -65,7 +67,8 @@ public class Parser {
         return "OK, I've marked this task as not done yet:\n  " + tasks.get(index);
     }
 
-    private static String handleTodoCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleTodoCommand(String[] inputSplit,
+                                            TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
             throw new BobException("The description of a todo cannot be empty.");
         }
@@ -75,7 +78,8 @@ public class Parser {
         return ui.showAddedTask(task, tasks);
     }
 
-    private static String handleDeadlineCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleDeadlineCommand(String[] inputSplit,
+                                                TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 2 || !inputSplit[1].contains(" /by ")) {
             throw new BobException("The description of a deadline must include '/by' followed by a date/time.");
         }
@@ -91,16 +95,18 @@ public class Parser {
         }
     }
 
-    private static String handleEventCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleEventCommand(String[] inputSplit,
+                                             TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 2 || !inputSplit[1].contains(" /from ") || !inputSplit[1].contains(" /to ")) {
-            throw new BobException("The description of an event must include '/from' followed by start time and '/to' followed by end time.");
+            throw new BobException("The description of an event must include '/from' " +
+                    "followed by start time and '/to' followed by end time.");
         }
         String[] parts = inputSplit[1].split(" /from ", 2);
-        String[] fromTo = parts[1].split(" /to ", 2);
+        String[] eventStartEnd = parts[1].split(" /to ", 2);
 
         try {
-            LocalDateTime from = LocalDateTime.parse(fromTo[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
-            LocalDateTime to = LocalDateTime.parse(fromTo[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            LocalDateTime from = LocalDateTime.parse(eventStartEnd[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            LocalDateTime to = LocalDateTime.parse(eventStartEnd[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
             Task task = new Event(parts[0], from, to);
             tasks.addTask(task);
             storage.save(tasks);
@@ -110,7 +116,9 @@ public class Parser {
         }
     }
 
-    private static String handleDeleteCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleDeleteCommand(
+            String[] inputSplit, TaskList tasks, Ui ui, Storage storage)
+            throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
         assert index >= 0 && index < tasks.size();
         Task removedTask = tasks.removeTask(index);

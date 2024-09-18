@@ -1,5 +1,9 @@
 package bob;
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,9 +37,9 @@ public class Storage {
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" \\| ");
+            String nextLine;
+            while ((nextLine = reader.readLine()) != null) {
+                String[] parts = nextLine.split(" \\| ");
                 switch (parts[0]) {
                     case "T":
                         tasks.add(new Todo(parts[2], parts[1].equals("1")));
