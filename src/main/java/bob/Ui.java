@@ -55,6 +55,8 @@ public class Ui {
      * @param tasks the TaskList containing all tasks.
      */
     public String showAddedTask(Task task, TaskList tasks) {
+        assert task != null;
+        assert tasks != null;
         return showLine() + "\n" +
                 "Got it. I've added this task:\n" +
                 "  " + task + "\n" +
@@ -69,6 +71,8 @@ public class Ui {
      * @param tasks the TaskList containing all tasks.
      */
     public String showRemovedTask(Task task, TaskList tasks) {
+        assert task != null;
+        assert tasks != null;
         return showLine() + "\n" +
                 "Noted. I've removed this task:\n" +
                 "  " + task + "\n" +
@@ -82,6 +86,7 @@ public class Ui {
      * @param matchingTasks the list of matching tasks to be displayed.
      */
     public String showMatchingTasks(ArrayList<Task> matchingTasks) {
+        assert matchingTasks != null;
         StringBuilder sb = new StringBuilder();
         sb.append(showLine()).append("\n");
         if (matchingTasks.isEmpty()) {

@@ -51,6 +51,7 @@ public class Parser {
 
     private static String handleMarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
+        assert index >= 0 && index < tasks.size();
         tasks.get(index).markAsDone();
         storage.save(tasks);
         return "Nice! I've marked this task as done:\n  " + tasks.get(index);
@@ -58,6 +59,7 @@ public class Parser {
 
     private static String handleUnmarkCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
+        assert index >= 0 && index < tasks.size();
         tasks.get(index).unmarkAsDone();
         storage.save(tasks);
         return "OK, I've marked this task as not done yet:\n  " + tasks.get(index);
@@ -110,6 +112,7 @@ public class Parser {
 
     private static String handleDeleteCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         int index = Integer.parseInt(inputSplit[1]) - 1;
+        assert index >= 0 && index < tasks.size();
         Task removedTask = tasks.removeTask(index);
         storage.save(tasks);
         return ui.showRemovedTask(removedTask, tasks);

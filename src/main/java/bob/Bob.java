@@ -23,6 +23,7 @@ public class Bob {
             ui.showLoadingError();
             tasks = new TaskList();
         }
+        assert storage != null;
     }
     public Bob() {
         this(DEFAULT_FILE_PATH);
