@@ -3,50 +3,66 @@ package bob;
 import java.util.ArrayList;
 
 public class Ui {
-    public void showWelcome() {
-        System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm Bob");
-        System.out.println("What can I do for you?");
-        System.out.println("____________________________________________________________");
+    public String showWelcome() {
+        return "_______________________________________________________\n" +
+                "Hello! I'm Bob\n" +
+                "What can I do for you?\n" +
+                "_______________________________________________________";
     }
 
-    public void showGoodbye() {
-        System.out.println("____________________________________________________________");
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println("____________________________________________________________");
+    public String showGoodbye() {
+        return "_______________________________________________________\n" +
+                "Bye. Hope to see you again soon!\n" +
+                "_______________________________________________________";
     }
 
-    public void showLine() {
-        System.out.println("____________________________________________________________");
+    public String showLine() {
+        return "_______________________________________________________";
     }
 
-    public void showError(String message) {
-        System.out.println("OOPS!!! " + message);
+    public String showError(String message) {
+        return "OOPS!!! " + message;
     }
 
-    public void showLoadingError() {
-        System.out.println("Error loading tasks. Starting with an empty task list.");
+    public String showLoadingError() {
+        return "Error loading tasks. Starting with an empty task list.";
     }
-
 
     /**
      * Displays the list of tasks to the user.
      *
      * @param tasks the TaskList containing the tasks to be displayed.
      */
-    public void showTaskList(TaskList tasks) throws BobException {
-        showLine();
+    public String showTaskList(TaskList tasks) throws BobException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(showLine()).append("\n");
         if (tasks.isEmpty()) {
-            System.out.println("No tasks added yet.");
+            sb.append("No tasks added yet.\n");
         } else {
-            System.out.println("Here are the tasks in your list:");
+            sb.append("Here are the tasks in your list:\n");
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + "." + tasks.get(i));
+                sb.append((i + 1)).append(".").append(tasks.get(i)).append("\n");
             }
         }
-        showLine();
+        sb.append(showLine());
+        return sb.toString();
     }
 
+    /**
+     * Displays a message indicating that a task has been added.
+     *
+     * @param task the task that was added.
+     * @param tasks the TaskList containing all tasks.
+     */
+    public String showAddedTask(Task task, TaskList tasks) {
+        assert task != null;
+        assert tasks != null;
+        return showLine() + "\n" +
+                "Got it. I've added this task:\n" +
+                "  " + task + "\n" +
+                "Now you have " + tasks.size() + " tasks in the list.\n" +
+                showLine();
+    }
 
     /**
      * Displays a message indicating that a task has been removed.
@@ -54,20 +70,14 @@ public class Ui {
      * @param task the task that was removed.
      * @param tasks the TaskList containing all tasks.
      */
-    public void showAddedTask(Task task, TaskList tasks) {
-        showLine();
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        showLine();
-    }
-
-    public void showRemovedTask(Task task, TaskList tasks) {
-        showLine();
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        showLine();
+    public String showRemovedTask(Task task, TaskList tasks) {
+        assert task != null;
+        assert tasks != null;
+        return showLine() + "\n" +
+                "Noted. I've removed this task:\n" +
+                "  " + task + "\n" +
+                "Now you have " + tasks.size() + " tasks in the list.\n" +
+                showLine();
     }
 
     /**
@@ -75,16 +85,19 @@ public class Ui {
      *
      * @param matchingTasks the list of matching tasks to be displayed.
      */
-    public void showMatchingTasks(ArrayList<Task> matchingTasks) {
-        showLine();
+    public String showMatchingTasks(ArrayList<Task> matchingTasks) {
+        assert matchingTasks != null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(showLine()).append("\n");
         if (matchingTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
+            sb.append("No matching tasks found.\n");
         } else {
-            System.out.println("Here are the matching tasks in your list:");
+            sb.append("Here are the matching tasks in your list:\n");
             for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println((i + 1) + "." + matchingTasks.get(i));
+                sb.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
             }
         }
-        showLine();
+        sb.append(showLine());
+        return sb.toString();
     }
 }

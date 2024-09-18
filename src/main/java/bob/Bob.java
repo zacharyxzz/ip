@@ -7,6 +7,7 @@ public class Bob {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
+    private static final String DEFAULT_FILE_PATH = "data/duke.txt";
 
     /**
      * Constructs a Bob object that initializes the UI, Storage, and TaskList components.
@@ -22,21 +23,24 @@ public class Bob {
             ui.showLoadingError();
             tasks = new TaskList();
         }
+        assert storage != null;
+    }
+    public Bob() {
+        this(DEFAULT_FILE_PATH);
     }
 
     /**
-     * Starts the Bob application, handling user input and commands.
+     * Generates a response for the user's chat message.
      */
-    public void run() {
-        ui.showWelcome();
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.nextLine();
-            Parser.parse(input, tasks, ui, storage);
-        }
+    public String getResponse(String input) {
+        return Parser.parse(input, tasks, ui, storage);
     }
 
-    public static void main(String[] args) {
-        new Bob("data/duke.txt").run();
+    /**
+     * Returns the welcome message from the Ui.
+     */
+    public String getWelcomeMessage() {
+        return ui.showWelcome();
     }
+
 }

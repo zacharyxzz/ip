@@ -28,6 +28,7 @@ public class TaskList {
      * @param task the task to be added.
      */
     public void addTask(Task task) {
+        assert task != null;
         tasks.add(task);
     }
 
