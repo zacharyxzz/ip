@@ -40,7 +40,7 @@ public class Parser {
         }
     }
 
-    // Helper methods to handle specific commands
+    // Helper methods to handle specific user commands
 
     private static String handleExpenseCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
         if (inputSplit.length < 3) {
