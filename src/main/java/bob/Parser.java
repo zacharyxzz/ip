@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Parser {
 
     public static String parse(String input, TaskList tasks, Ui ui, Storage storage) {
-        String[] inputSplit = input.split(" ", 2);
+        String[] inputSplit = input.split(" ");
         String command = inputSplit[0];
 
         try {
@@ -28,6 +28,8 @@ public class Parser {
                     return handleEventCommand(inputSplit, tasks, ui, storage);
                 case "delete":
                     return handleDeleteCommand(inputSplit, tasks, ui, storage);
+                case "expense":
+                    return handleExpenseCommand(inputSplit, tasks, ui, storage);
                 case "find":
                     return handleFindCommand(inputSplit, tasks, ui);
                 default:
@@ -39,6 +41,26 @@ public class Parser {
     }
 
     // Helper methods to handle specific commands
+
+    private static String handleExpenseCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+        if (inputSplit.length < 3) {
+            throw new BobException("An Expense command should follow this format: expense [name] [amount]");
+        }
+
+        String expenseName = inputSplit[1].trim();
+        String amountStr = inputSplit[2].trim();
+
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
+            throw new BobException("The amount should be a valid number.");
+        }
+        Task task = new Expense(expenseName, amount);
+        tasks.addTask(task);
+        storage.save(tasks);
+        return "Expense '" + expenseName + "' of amount " + amount + " recorded!";
+    }
 
     private static String handleFindCommand(String[] inputSplit, TaskList tasks, Ui ui) throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {

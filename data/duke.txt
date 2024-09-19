@@ -1,2 +1,2 @@
-T | 0 | homework
-D | 0 | homework | 2024-09-14T23:59
+D | 1 | homework | 2024-09-14T23:59
+Expense | food | 100.0
