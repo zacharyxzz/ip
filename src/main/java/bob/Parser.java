@@ -38,7 +38,7 @@ public class Parser {
         }
     }
 
-    // Helper methods to handle specific commands
+    // Helper methods to handle specific user commands
 
     private static String handleFindCommand(String[] inputSplit, TaskList tasks, Ui ui) throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
