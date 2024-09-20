@@ -22,6 +22,7 @@ Adds a simple to-do task to your task list.
 todo [task name]
 ```
 
+
 **Example**:
 ```bash
 todo buy groceries
