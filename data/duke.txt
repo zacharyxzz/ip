@@ -1,2 +1,4 @@
-D | 1 | homework | 2024-09-14T23:59
-Expense | food | 100.0
+T | 0 | buy
+E | 0 | team meeting | 2024-10-20T14:00 | 2024-10-20T16:00
+D | 0 | submit report | 2024-10-15T18:00
+Expense | dinner | 100.0
