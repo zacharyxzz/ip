@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Parser {
 
     public static String parse(String input, TaskList tasks, Ui ui, Storage storage) {
-        String[] inputSplit = input.split(" ");
+        String[] inputSplit = input.split(" ", 2);
         String command = inputSplit[0];
 
         try {
@@ -40,15 +40,20 @@ public class Parser {
         }
     }
 
-    // Helper methods to handle specific user commands
+    // Helper methods to handle specific commands
 
     private static String handleExpenseCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
-        if (inputSplit.length < 3) {
+        if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
             throw new BobException("An Expense command should follow this format: expense [name] [amount]");
         }
 
-        String expenseName = inputSplit[1].trim();
-        String amountStr = inputSplit[2].trim();
+        String[] expenseDetails = inputSplit[1].trim().split(" ");
+        if (expenseDetails.length < 2) {
+            throw new BobException("An Expense command should follow this format: expense [name] [amount]");
+        }
+
+        String expenseName = expenseDetails[0].trim();
+        String amountStr = expenseDetails[1].trim();
 
         double amount;
         try {
