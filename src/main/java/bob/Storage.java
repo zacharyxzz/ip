@@ -45,10 +45,13 @@ public class Storage {
                         tasks.add(new Todo(parts[2], parts[1].equals("1")));
                         break;
                     case "D":
-                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
+                        tasks.add(new Deadline(parts[2], LocalDateTime.parse(parts[3],
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
                         break;
                     case "E":
-                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), LocalDateTime.parse(parts[4], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
+                        tasks.add(new Event(parts[2], LocalDateTime.parse(parts[3],
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), LocalDateTime.parse(parts[4],
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), parts[1].equals("1")));
                         break;
                     default:
                         throw new BobException("Unknown task type in data file.");
