@@ -42,7 +42,8 @@ public class Parser {
 
     // Helper methods to handle specific commands
 
-    private static String handleExpenseCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage) throws BobException {
+    private static String handleExpenseCommand(String[] inputSplit, TaskList tasks, Ui ui, Storage storage)
+            throws BobException {
         if (inputSplit.length < 2 || inputSplit[1].trim().isEmpty()) {
             throw new BobException("An Expense command should follow this format: expense [name] [amount]");
         }
